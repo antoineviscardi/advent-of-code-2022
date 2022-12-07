@@ -1,31 +1,53 @@
 pub mod app {
-    use super::domain;
+    use super::domain::{Elf, Food};
     use std::fs::read_to_string;
 
-    pub fn process_file(path: String) -> Vec<domain::Elf> {
+    pub fn parse_file(path: String) -> Vec<Elf> {
         let file_content = read_to_string(path).unwrap();
 
-        let result = Vec::from('a');
+        let mut result = Vec::new();
+        result.push(Elf::new());
+
         file_content.split('\n').for_each(|line| {
-            result
-        })
+            if line == "" {
+                result.push(Elf::new());
+                return;
+            };
+
+            result.last_mut().unwrap().inventory.push(Food {
+                calories: line.parse().unwrap(),
+            });
+        });
 
         return result;
+    }
+
+    pub fn get_top_elf_calories(elfs: &Vec<Elf>) -> u32 {
+        elfs.iter().map(|elf| elf.total_calories()).max().unwrap()
     }
 }
 
 mod domain {
+
+    #[derive(Debug)]
     pub struct Elf {
-        inventory: Vec<Food>,
+        pub inventory: Vec<Food>,
     }
 
     impl Elf {
-        fn total_calories(&self) -> u32 {
+        pub fn new() -> Self {
+            Elf {
+                inventory: Vec::new(),
+            }
+        }
+
+        pub fn total_calories(&self) -> u32 {
             self.inventory.iter().map(|f| f.calories).sum()
         }
     }
 
-    struct Food {
-        calories: u32,
+    #[derive(Debug)]
+    pub struct Food {
+        pub calories: u32,
     }
 }
