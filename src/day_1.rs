@@ -22,8 +22,15 @@ pub mod app {
         return result;
     }
 
-    pub fn get_top_elf_calories(elfs: &Vec<Elf>) -> u32 {
-        elfs.iter().map(|elf| elf.total_calories()).max().unwrap()
+    pub fn get_top_n_elves_calories(elves: &Vec<Elf>, n: usize) -> u32 {
+        let mut elves_calories: Vec<u32> = elves
+            .clone()
+            .iter()
+            .map(|elf| elf.total_calories())
+            .collect();
+        elves_calories.sort_by(|a, b| b.cmp(a));
+        elves_calories.truncate(n);
+        elves_calories.iter().sum()
     }
 }
 
