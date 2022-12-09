@@ -1,4 +1,5 @@
 mod day_1;
+mod day_2;
 
 fn main() {
     let elfs = day_1::app::parse_file("assets/day1.txt".to_string());
