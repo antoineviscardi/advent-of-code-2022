@@ -100,3 +100,11 @@ pub fn part_2_strat(elf_move: &Move, c: &char) -> Move {
         _ => panic!("expected one of 'X', 'Y', or 'Z'"),
     }
 }
+
+pub fn solve(input: &String) {
+    let strategy = Strategy::from_input(&input, part_1_strat);
+    println!("Day 2, Part 1: {}", strategy.get_points());
+
+    let strategy = Strategy::from_input(&input, part_2_strat);
+    println!("Day 2, Part 2: {}", strategy.get_points());
+}

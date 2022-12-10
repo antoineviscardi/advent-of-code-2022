@@ -1,5 +1,5 @@
 #[derive(Clone, PartialEq, Debug)]
-pub struct Item(char);
+struct Item(char);
 
 impl Item {
     pub fn get_priority(&self) -> u32 {
@@ -14,7 +14,7 @@ impl Item {
     }
 }
 
-pub struct Rucksack {
+struct Rucksack {
     items: Vec<Item>,
 }
 
@@ -47,7 +47,7 @@ impl Rucksack {
     }
 }
 
-pub struct Group<'a> {
+struct Group<'a> {
     pub rucksacks: &'a [Rucksack],
 }
 
@@ -63,4 +63,25 @@ impl Group<'_> {
         }
         panic!("no badge found for group")
     }
+}
+
+pub fn solve(input: &String) {
+    let rucksacks: Vec<Rucksack> = input
+        .split('\n')
+        .map(|line| Rucksack::from_input_line(line))
+        .collect();
+
+    let result: u32 = rucksacks
+        .iter()
+        .map(|r| r.get_duplicate_item())
+        .map(|i| i.get_priority())
+        .sum();
+    println!("Day 3, Part 1: {}", result);
+
+    let result_pt2: u32 = rucksacks
+        .chunks(3)
+        .map(|chunk| Group { rucksacks: chunk })
+        .map(|group| group.get_badge_item().get_priority())
+        .sum();
+    println!("Day 3, Part 2: {}", result_pt2);
 }

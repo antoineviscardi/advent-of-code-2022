@@ -1,14 +1,11 @@
 pub mod app {
     use super::domain::{Elf, Food};
-    use std::fs::read_to_string;
 
-    pub fn parse_file(path: String) -> Vec<Elf> {
-        let file_content = read_to_string(path).unwrap();
-
+    pub fn parse_file(input: &String) -> Vec<Elf> {
         let mut result = Vec::new();
         result.push(Elf::new());
 
-        file_content.split('\n').for_each(|line| {
+        input.split('\n').for_each(|line| {
             if line == "" {
                 result.push(Elf::new());
                 return;
@@ -57,4 +54,13 @@ mod domain {
     pub struct Food {
         pub calories: u32,
     }
+}
+
+pub fn solve(input: &String) {
+    let elves = app::parse_file(input);
+    let result = app::get_top_n_elves_calories(&elves, 1);
+    println!("Day 1, Part 1: {:?}", result);
+
+    let result = app::get_top_n_elves_calories(&elves, 3);
+    println!("Day 1, Part 2: {:?}", result);
 }
