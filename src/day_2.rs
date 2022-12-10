@@ -1,5 +1,5 @@
-#[derive(PartialEq)]
-enum Move {
+#[derive(PartialEq, Clone)]
+pub enum Move {
     Rock,
     Paper,
     Scisor,
@@ -45,7 +45,7 @@ impl Round {
 pub struct Strategy(Vec<Round>);
 
 impl Strategy {
-    pub fn from_input(input: String) -> Self {
+    pub fn from_input(input: &String, move_strategy: impl Fn(&Move, &char) -> Move) -> Self {
         let rounds = input
             .split('\n')
             .filter(|line| !line.is_empty())
@@ -58,9 +58,7 @@ impl Strategy {
                     _ => panic!("unexpected elf move when processing line '{}'", line),
                 };
                 let your_move = match chars.next_back() {
-                    Some('X') => Move::Rock,
-                    Some('Y') => Move::Paper,
-                    Some('Z') => Move::Scisor,
+                    Some(c) => move_strategy(&elf_move, &c),
                     _ => panic!("unexpected move when processing line '{}'", line),
                 };
                 Round {
@@ -74,5 +72,31 @@ impl Strategy {
 
     pub fn get_points(&self) -> u32 {
         self.0.iter().map(|round| round.get_points()).sum()
+    }
+}
+
+pub fn part_1_strat(_: &Move, c: &char) -> Move {
+    match c {
+        'X' => Move::Rock,
+        'Y' => Move::Paper,
+        'Z' => Move::Scisor,
+        _ => panic!("expected one of 'X', 'Y', or 'Z'"),
+    }
+}
+
+pub fn part_2_strat(elf_move: &Move, c: &char) -> Move {
+    match c {
+        'X' => match elf_move {
+            Move::Rock => Move::Scisor,
+            Move::Paper => Move::Rock,
+            Move::Scisor => Move::Paper,
+        },
+        'Y' => elf_move.clone(),
+        'Z' => match elf_move {
+            Move::Rock => Move::Paper,
+            Move::Paper => Move::Scisor,
+            Move::Scisor => Move::Rock,
+        },
+        _ => panic!("expected one of 'X', 'Y', or 'Z'"),
     }
 }
