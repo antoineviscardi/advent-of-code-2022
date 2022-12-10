@@ -15,28 +15,52 @@ impl Item {
 }
 
 pub struct Rucksack {
-    compartment_1: Vec<Item>,
-    compartment_2: Vec<Item>,
+    items: Vec<Item>,
 }
 
 impl Rucksack {
     pub fn from_input_line(line: &str) -> Self {
         let items: Vec<Item> = line.chars().map(Item).collect();
-        let middle = items.len() / 2;
-        let (first_half, second_half) = items.split_at(middle);
+        Rucksack { items }
+        // let middle = items.len() / 2;
+        // let (first_half, second_half) = items.split_at(middle);
 
-        Rucksack {
-            compartment_1: first_half.to_vec(),
-            compartment_2: second_half.to_vec(),
-        }
+        // Rucksack {
+        //     compartment_1: first_half.to_vec(),
+        //     compartment_2: second_half.to_vec(),
+        // }
+    }
+
+    fn get_compartments(&self) -> (&[Item], &[Item]) {
+        let middle = self.items.len() / 2;
+        self.items.split_at(middle)
     }
 
     pub fn get_duplicate_item(&self) -> &Item {
-        for item in self.compartment_1.iter() {
-            if self.compartment_2.contains(item) {
+        let (compartment_1, compartment_2) = self.get_compartments();
+        for item in compartment_1.iter() {
+            if compartment_2.contains(item) {
                 return item;
             }
         }
         panic!("No duplicate item found")
+    }
+}
+
+pub struct Group<'a> {
+    pub rucksacks: &'a [Rucksack],
+}
+
+impl Group<'_> {
+    pub fn get_badge_item(&self) -> &Item {
+        for item in &self.rucksacks[0].items {
+            if self.rucksacks[1..]
+                .iter()
+                .all(|ruck| ruck.items.contains(item))
+            {
+                return item;
+            }
+        }
+        panic!("no badge found for group")
     }
 }

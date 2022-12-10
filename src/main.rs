@@ -32,5 +32,12 @@ fn main() {
         .map(|r| r.get_duplicate_item())
         .map(|i| i.get_priority())
         .sum();
-    println!("Day 3, Part 1: {}", result)
+    println!("Day 3, Part 1: {}", result);
+
+    let result_pt2: u32 = rucksacks
+        .chunks(3)
+        .map(|chunk| day_3::Group { rucksacks: chunk })
+        .map(|group| group.get_badge_item().get_priority())
+        .sum();
+    println!("Day 3, Part 2: {}", result_pt2);
 }
