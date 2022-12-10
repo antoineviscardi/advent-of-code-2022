@@ -23,11 +23,14 @@ fn main() {
 
     // Day 3
     let input = read_to_string("assets/day3.txt").unwrap();
-    let rucksacks = input
+    let rucksacks: Vec<day_3::Rucksack> = input
         .split('\n')
-        .map(|line| day_3::Rucksack::from_input_line(line));
+        .map(|line| day_3::Rucksack::from_input_line(line))
+        .collect();
     let result: u32 = rucksacks
-        .flat_map(|rucksack| rucksack.get_duplicate_items())
-        .map(|item| item.get_priority())
+        .iter()
+        .map(|r| r.get_duplicate_item())
+        .map(|i| i.get_priority())
         .sum();
+    println!("Day 3, Part 1: {}", result)
 }

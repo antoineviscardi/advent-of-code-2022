@@ -1,7 +1,5 @@
-use std::collections::HashMap;
-
-#[derive(Clone, PartialEq)]
-struct Item(char);
+#[derive(Clone, PartialEq, Debug)]
+pub struct Item(char);
 
 impl Item {
     pub fn get_priority(&self) -> u32 {
@@ -33,13 +31,12 @@ impl Rucksack {
         }
     }
 
-    pub fn get_duplicate_items(&self) -> Vec<&Item> {
-        let mut result = Vec::new();
+    pub fn get_duplicate_item(&self) -> &Item {
         for item in self.compartment_1.iter() {
             if self.compartment_2.contains(item) {
-                result.push(item)
+                return item;
             }
         }
-        result
+        panic!("No duplicate item found")
     }
 }
