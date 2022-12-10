@@ -42,23 +42,26 @@ impl Round {
     }
 }
 
-struct Strategy(Vec<Round>);
+pub struct Strategy(Vec<Round>);
 
 impl Strategy {
     pub fn from_input(input: String) -> Self {
         let rounds = input
             .split('\n')
+            .filter(|line| !line.is_empty())
             .map(|line| {
-                let chars = line.chars();
+                let mut chars = line.chars();
                 let elf_move = match chars.next() {
                     Some('A') => Move::Rock,
                     Some('B') => Move::Paper,
                     Some('C') => Move::Scisor,
+                    _ => panic!("unexpected elf move when processing line '{}'", line),
                 };
                 let your_move = match chars.next_back() {
                     Some('X') => Move::Rock,
                     Some('Y') => Move::Paper,
                     Some('Z') => Move::Scisor,
+                    _ => panic!("unexpected move when processing line '{}'", line),
                 };
                 Round {
                     elf_move,
@@ -69,5 +72,7 @@ impl Strategy {
         Strategy(rounds)
     }
 
-    pub fn get_points()
+    pub fn get_points(&self) -> u32 {
+        self.0.iter().map(|round| round.get_points()).sum()
+    }
 }
