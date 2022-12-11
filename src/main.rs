@@ -3,6 +3,7 @@ use std::fs::read_to_string;
 mod day_1;
 mod day_2;
 mod day_3;
+mod day_4;
 
 fn main() {
     let input = read_to_string("assets/day1.txt").unwrap();
