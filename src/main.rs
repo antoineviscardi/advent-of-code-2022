@@ -15,5 +15,8 @@ fn main() {
     let input = read_to_string("assets/day3.txt").unwrap();
     day_3::solve(&input);
 
+    println!("\nDay 4");
     let input = read_to_string("assets/day4.txt").unwrap();
+    println!("  Part 1: {}", day_4::solve_pt1(&input));
+    println!("  Part 2: {}", day_4::solve_pt2(&input));
 }
