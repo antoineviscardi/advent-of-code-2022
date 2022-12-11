@@ -101,10 +101,12 @@ pub fn part_2_strat(elf_move: &Move, c: &char) -> Move {
     }
 }
 
-pub fn solve(input: &String) {
+pub fn solve_pt1(input: &String) -> u32 {
     let strategy = Strategy::from_input(&input, part_1_strat);
-    println!("Day 2, Part 1: {}", strategy.get_points());
+    strategy.get_points()
+}
 
+pub fn solve_pt2(input: &String) -> u32 {
     let strategy = Strategy::from_input(&input, part_2_strat);
-    println!("Day 2, Part 2: {}", strategy.get_points());
+    strategy.get_points()
 }

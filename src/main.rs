@@ -6,14 +6,20 @@ mod day_3;
 mod day_4;
 
 fn main() {
+    println!("\nDay 1");
     let input = read_to_string("assets/day1.txt").unwrap();
-    day_1::solve(&input);
+    println!("  Part 1: {}", day_1::solve_pt1(&input));
+    println!("  Part 2: {}", day_1::solve_pt2(&input));
 
+    println!("\nDay 2");
     let input = read_to_string("assets/day2.txt").unwrap();
-    day_2::solve(&input);
+    println!("  Part 1: {}", day_2::solve_pt1(&input));
+    println!("  Part 2: {}", day_2::solve_pt2(&input));
 
+    println!("\nDay 3");
     let input = read_to_string("assets/day3.txt").unwrap();
-    day_3::solve(&input);
+    println!("  Part 1: {}", day_3::solve_pt1(&input));
+    println!("  Part 2: {}", day_3::solve_pt2(&input));
 
     println!("\nDay 4");
     let input = read_to_string("assets/day4.txt").unwrap();
