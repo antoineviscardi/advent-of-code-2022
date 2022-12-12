@@ -1,7 +1,7 @@
 use super::pile::Pile;
 
 pub struct Movement {
-    quantity: u32,
+    quantity: usize,
     from: usize,
     to: usize,
 }
@@ -27,6 +27,22 @@ impl Movement {
                 .and_then(|pile| Some(pile.cargo_crates.push(moving_crate)))
                 .unwrap();
         }
+    }
+
+    pub fn execute_crane_9001(&self, piles: &mut Vec<Pile>) {
+        let mut moving_crates = piles
+            .get_mut(self.from - 1)
+            .and_then(|pile| {
+                let split_idx = pile.cargo_crates.len() - self.quantity;
+                let moving = pile.cargo_crates.split_off(split_idx);
+                Some(moving)
+            })
+            .unwrap();
+
+        piles
+            .get_mut(self.to - 1)
+            .and_then(|pile| Some(pile.cargo_crates.append(&mut moving_crates)))
+            .unwrap();
     }
 }
 
@@ -61,6 +77,26 @@ mod tests {
         assert_eq!(
             piles.get(1).unwrap().cargo_crates,
             vec!['X', 'Y', 'Z', 'C', 'B']
+        );
+    }
+
+    #[test]
+    fn test_execute_crane_9001() {
+        let pile1 = Pile {
+            cargo_crates: vec!['A', 'B', 'C'],
+        };
+        let pile2 = Pile {
+            cargo_crates: vec!['X', 'Y', 'Z'],
+        };
+        let mut piles = vec![pile1, pile2];
+        let movement = Movement::parse("move 2 from 1 to 2");
+
+        movement.execute_crane_9001(&mut piles);
+
+        assert_eq!(piles.get(0).unwrap().cargo_crates, vec!['A']);
+        assert_eq!(
+            piles.get(1).unwrap().cargo_crates,
+            vec!['X', 'Y', 'Z', 'B', 'C']
         );
     }
 }
