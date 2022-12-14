@@ -5,6 +5,7 @@ mod day_2;
 mod day_3;
 mod day_4;
 mod day_5;
+mod day_6;
 
 fn main() {
     println!("\nDay 1");
@@ -31,4 +32,9 @@ fn main() {
     let input = read_to_string("assets/day5.txt").unwrap();
     println!("  Part 1: {}", day_5::solve_pt1(&input));
     println!("  Part 2: {}", day_5::solve_pt2(&input));
+
+    println!("\nDay 6");
+    let input = read_to_string("assets/day6.txt").unwrap();
+    println!("  Part 1: {}", day_6::solve_pt1(&input));
+    println!("  Part 2: {}", day_6::solve_pt2(&input));
 }
