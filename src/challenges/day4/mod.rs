@@ -9,22 +9,20 @@ fn parse_section_pairs(input: &String) -> impl Iterator<Item = (Section, Section
         .map(|(a, b)| (Section::from_string(a), Section::from_string(b)))
 }
 
-pub fn solve_pt1(input: &String) -> u32 {
-    parse_section_pairs(&input)
+pub fn solve_pt1(input: &String) -> String {
+    let output = parse_section_pairs(&input)
         .map(|(a, b)| a.has_full_overlap_with(&b))
         .filter(|x| *x)
-        .count()
-        .try_into()
-        .unwrap()
+        .count();
+    format!("{}", output)
 }
 
-pub fn solve_pt2(input: &String) -> u32 {
-    parse_section_pairs(&input)
+pub fn solve_pt2(input: &String) -> String {
+    let output = parse_section_pairs(&input)
         .map(|(a, b)| a.has_overlap_with(&b))
         .filter(|x| *x)
-        .count()
-        .try_into()
-        .unwrap()
+        .count();
+    format!("{}", output)
 }
 
 #[cfg(test)]
@@ -38,7 +36,7 @@ mod tests {
         fn it_should_generate_the_correct_result() {
             let input = String::from("2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8");
             let result = solve_pt1(&input);
-            assert_eq!(result, 2);
+            assert_eq!(result, "2");
         }
     }
 
@@ -49,7 +47,7 @@ mod tests {
         fn it_should_generate_the_correct_result() {
             let input = String::from("2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8");
             let result = solve_pt2(&input);
-            assert_eq!(result, 4);
+            assert_eq!(result, "4");
         }
     }
 }

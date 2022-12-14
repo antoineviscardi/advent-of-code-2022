@@ -65,26 +65,28 @@ impl Group<'_> {
     }
 }
 
-pub fn solve_pt1(input: &String) -> u32 {
+pub fn solve_pt1(input: &String) -> String {
     let rucksacks: Vec<Rucksack> = input
         .split('\n')
         .map(|line| Rucksack::from_input_line(line))
         .collect();
-    rucksacks
+    let output: u32 = rucksacks
         .iter()
         .map(|r| r.get_duplicate_item())
         .map(|i| i.get_priority())
-        .sum()
+        .sum();
+    format!("{}", output)
 }
 
-pub fn solve_pt2(input: &String) -> u32 {
+pub fn solve_pt2(input: &String) -> String {
     let rucksacks: Vec<Rucksack> = input
         .split('\n')
         .map(|line| Rucksack::from_input_line(line))
         .collect();
-    rucksacks
+    let output: u32 = rucksacks
         .chunks(3)
         .map(|chunk| Group { rucksacks: chunk })
         .map(|group| group.get_badge_item().get_priority())
-        .sum()
+        .sum();
+    format!("{}", output)
 }

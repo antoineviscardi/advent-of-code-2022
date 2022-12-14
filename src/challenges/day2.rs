@@ -101,12 +101,14 @@ pub fn part_2_strat(elf_move: &Move, c: &char) -> Move {
     }
 }
 
-pub fn solve_pt1(input: &String) -> u32 {
+pub fn solve_pt1(input: &String) -> String {
     let strategy = Strategy::from_input(&input, part_1_strat);
-    strategy.get_points()
+    let output = strategy.get_points();
+    format!("{}", output)
 }
 
-pub fn solve_pt2(input: &String) -> u32 {
+pub fn solve_pt2(input: &String) -> String {
     let strategy = Strategy::from_input(&input, part_2_strat);
-    strategy.get_points()
+    let output = strategy.get_points();
+    format!("{}", output)
 }

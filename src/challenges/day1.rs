@@ -56,12 +56,14 @@ mod domain {
     }
 }
 
-pub fn solve_pt1(input: &String) -> u32 {
+pub fn solve_pt1(input: &String) -> String {
     let elves = app::parse_file(input);
-    app::get_top_n_elves_calories(&elves, 1)
+    let output = app::get_top_n_elves_calories(&elves, 1);
+    format!("{}", output)
 }
 
-pub fn solve_pt2(input: &String) -> u32 {
+pub fn solve_pt2(input: &String) -> String {
     let elves = app::parse_file(input);
-    app::get_top_n_elves_calories(&elves, 3)
+    let output = app::get_top_n_elves_calories(&elves, 3);
+    format!("{}", output)
 }

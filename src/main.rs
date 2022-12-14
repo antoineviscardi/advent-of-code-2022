@@ -1,46 +1,36 @@
-use std::fs::read_to_string;
-
-mod day_1;
-mod day_2;
-mod day_3;
-mod day_4;
-mod day_5;
-mod day_6;
-mod day_7;
+use advent_of_code_2022::challenges::{day1, day2, day3, day4, day5, day6, day7};
 
 fn main() {
-    println!("\nDay 1");
-    let input = read_to_string("assets/day1.txt").unwrap();
-    println!("  Part 1: {}", day_1::solve_pt1(&input));
-    println!("  Part 2: {}", day_1::solve_pt2(&input));
+    println!("AoC 2022");
 
-    println!("\nDay 2");
-    let input = read_to_string("assets/day2.txt").unwrap();
-    println!("  Part 1: {}", day_2::solve_pt1(&input));
-    println!("  Part 2: {}", day_2::solve_pt2(&input));
+    let day = parse_day_from_args();
+    println!("Day {}", day.0);
+    let input = std::fs::read_to_string(format!("assets/day{}.txt", day.0)).unwrap();
+    let (pt1, pt2) = match day.0 {
+        1 => (day1::solve_pt1(&input), day1::solve_pt2(&input)),
+        2 => (day2::solve_pt1(&input), day2::solve_pt2(&input)),
+        3 => (day3::solve_pt1(&input), day3::solve_pt2(&input)),
+        4 => (day4::solve_pt1(&input), day4::solve_pt2(&input)),
+        5 => (day5::solve_pt1(&input), day5::solve_pt2(&input)),
+        6 => (day6::solve_pt1(&input), day6::solve_pt2(&input)),
+        7 => (day7::solve_pt1(&input), day7::solve_pt2(&input)),
+        _ => panic!("day number should be between 1 and 25, got {}", day.0),
+    };
+    println!("  Part 1: {}", pt1);
+    println!("  Part 2: {}", pt2);
+}
 
-    println!("\nDay 3");
-    let input = read_to_string("assets/day3.txt").unwrap();
-    println!("  Part 1: {}", day_3::solve_pt1(&input));
-    println!("  Part 2: {}", day_3::solve_pt2(&input));
+struct Day(u8);
+fn parse_day_from_args() -> Day {
+    let mut args = std::env::args();
 
-    println!("\nDay 4");
-    let input = read_to_string("assets/day4.txt").unwrap();
-    println!("  Part 1: {}", day_4::solve_pt1(&input));
-    println!("  Part 2: {}", day_4::solve_pt2(&input));
+    // Skiping 0 as the first arg is the executable name
+    let arg = args.nth(1).unwrap();
 
-    println!("\nDay 5");
-    let input = read_to_string("assets/day5.txt").unwrap();
-    println!("  Part 1: {}", day_5::solve_pt1(&input));
-    println!("  Part 2: {}", day_5::solve_pt2(&input));
+    let len = arg.len();
+    assert!((len == 4) || (len == 5));
+    assert_eq!(&arg[..3], "day");
 
-    println!("\nDay 6");
-    let input = read_to_string("assets/day6.txt").unwrap();
-    println!("  Part 1: {}", day_6::solve_pt1(&input));
-    println!("  Part 2: {}", day_6::solve_pt2(&input));
-
-    println!("\nDay 7");
-    let input = read_to_string("assets/day7.txt").unwrap();
-    println!("  Part 1: {}", day_7::solve_pt1(&input));
-    println!("  Part 2: {}", day_7::solve_pt2(&input));
+    let n: u8 = arg[3..len].parse().unwrap();
+    return Day(n);
 }
