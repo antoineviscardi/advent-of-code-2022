@@ -1,11 +1,11 @@
 pub struct Filesystem {
-    root: Directory,
+    root: DirectoryFile,
 }
 
 impl Filesystem {
     pub fn init() -> Self {
         Filesystem {
-            root: Directory::new("/"),
+            root: DirectoryFile::new("/"),
         }
     }
 }
@@ -22,34 +22,74 @@ mod filesystem_tests {
     }
 }
 
-pub struct Directory {
-    name: String,
-    files: Vec<File>,
-}
+pub use file::File;
+mod file {
+    use super::*;
 
-impl Directory {
-    pub fn new(name: &str) -> Self {
-        Directory {
-            name: name.to_string(),
-            files: Vec::new(),
+    pub enum File {
+        Directory(DirectoryFile),
+        Document(DocumentFile),
+    }
+
+    pub struct DirectoryFile {
+        pub name: String,
+        pub files: Vec<File>,
+    }
+    pub struct DocumentFile {
+        pub name: String,
+        pub size: u32,
+    }
+
+    impl File {
+        pub fn get_size(self) -> u32 {
+            match self {
+                File::Directory(dir) => dir.get_size(),
+                File::Document(doc) => doc.size,
+            }
+        }
+    }
+
+    impl DirectoryFile {
+        pub fn get_size(self) -> u32 {
+            todo!()
         }
     }
 }
 
-#[cfg(test)]
-mod directory_test {
-    use super::*;
+// mod directory {
+//     use super::*;
 
-    #[test]
-    fn test_new_works() {
-        let name = "cool dir bro";
-        let dir = Directory::new(name);
-        assert_eq!(dir.name, name.to_string());
-        assert!(dir.files.is_empty());
-    }
-}
+//     impl DirectoryFile {
+//         pub fn new(name: &str) -> Self {
+//             DirectoryFile {
+//                 name: name.to_string(),
+//                 files: Vec::new(),
+//             }
+//         }
 
-enum File {
-    Directory,
-    Document,
-}
+//         pub fn add_file(self, file: File) {}
+//     }
+
+//     #[cfg(test)]
+//     mod directory_test {
+//         use super::*;
+
+//         #[test]
+//         fn test_new() {
+//             let name = "cool dir bro";
+//             let dir = DirectoryFile::new(name);
+//             assert_eq!(dir.name, name.to_string());
+//             assert!(dir.files.is_empty());
+//         }
+
+//         #[test]
+//         fn test_add_file() {
+//             let dir = DirectoryFile::new("parent");
+//             let file = File::Document(DocumentFile {
+//                 name: "fileA".to_owned(),
+//                 size: 1024,
+//             });
+//             dir.add_file(file);
+//         }
+//     }
+// }
