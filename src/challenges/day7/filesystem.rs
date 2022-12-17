@@ -1,12 +1,24 @@
 pub struct Filesystem {
-    root: DirectoryFile,
+    current_dir: DirectoryFile,
+    parent_dir: Option<DirectoryFile>,
 }
 
 impl Filesystem {
     pub fn init() -> Self {
         Filesystem {
-            root: DirectoryFile::new("/"),
+            current_dir: DirectoryFile::new(String::from("/")),
+            parent_dir: None,
         }
+    }
+
+    pub fn add_files(self, files: Vec<File>) {
+        self.current_dir.files.append(files);
+    }
+
+    pub fn change_dir(self, name: &str) {}
+
+    pub fn get_directories(&self) -> &DirectoryFile {
+        todo!()
     }
 }
 
@@ -15,33 +27,37 @@ mod filesystem_tests {
     use super::*;
 
     #[test]
-    fn test_init_works() {
+    fn test_init() {
         let fs = Filesystem::init();
-        assert_eq!(fs.root.name, "/");
-        assert!(fs.root.files.is_empty());
+        assert_eq!(fs.current_dir.name, "/");
+        assert!(fs.current_dir.files.is_empty());
+        assert!(fs.parent_dir.is_none());
+    }
+
+    fn test_change_dir() {
+        let 
     }
 }
 
-pub use file::File;
+pub use file::*;
 mod file {
-    use super::*;
-
     pub enum File {
         Directory(DirectoryFile),
         Document(DocumentFile),
+    }
+
+    pub struct DocumentFile {
+        pub name: String,
+        pub size: u32,
     }
 
     pub struct DirectoryFile {
         pub name: String,
         pub files: Vec<File>,
     }
-    pub struct DocumentFile {
-        pub name: String,
-        pub size: u32,
-    }
 
     impl File {
-        pub fn get_size(self) -> u32 {
+        pub fn get_size(&self) -> u32 {
             match self {
                 File::Directory(dir) => dir.get_size(),
                 File::Document(doc) => doc.size,
@@ -50,46 +66,53 @@ mod file {
     }
 
     impl DirectoryFile {
-        pub fn get_size(self) -> u32 {
-            todo!()
+        pub fn new(name: String) -> Self {
+            Self {
+                name,
+                files: Vec::new(),
+            }
+        }
+
+        pub fn get_size(&self) -> u32 {
+            self.files.iter().map(|f| f.get_size()).sum()
         }
     }
 }
 
-// mod directory {
-//     use super::*;
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-//     impl DirectoryFile {
-//         pub fn new(name: &str) -> Self {
-//             DirectoryFile {
-//                 name: name.to_string(),
-//                 files: Vec::new(),
-//             }
-//         }
+    #[test]
+    fn test_get_size() {
+        let mut dir = DirectoryFile::new(String::from("dir"));
+        dir.files.push(File::Document(DocumentFile {
+            name: String::from(""),
+            size: 50,
+        }));
+        dir.files.push(File::Document(DocumentFile {
+            name: String::from(""),
+            size: 50,
+        }));
+        dir.files.push(File::Directory(DirectoryFile {
+            name: String::from("subdir"),
+            files: vec![
+                File::Document(DocumentFile {
+                    name: String::from(""),
+                    size: 10,
+                }),
+                File::Document(DocumentFile {
+                    name: String::from(""),
+                    size: 10,
+                }),
+            ],
+        }));
 
-//         pub fn add_file(self, file: File) {}
-//     }
+        assert_eq!(dir.get_size(), 120);
+    }
 
-//     #[cfg(test)]
-//     mod directory_test {
-//         use super::*;
-
-//         #[test]
-//         fn test_new() {
-//             let name = "cool dir bro";
-//             let dir = DirectoryFile::new(name);
-//             assert_eq!(dir.name, name.to_string());
-//             assert!(dir.files.is_empty());
-//         }
-
-//         #[test]
-//         fn test_add_file() {
-//             let dir = DirectoryFile::new("parent");
-//             let file = File::Document(DocumentFile {
-//                 name: "fileA".to_owned(),
-//                 size: 1024,
-//             });
-//             dir.add_file(file);
-//         }
-//     }
-// }
+    #[test]
+    fn test_get_directories() {
+        let mut fs = Filesystem::init();
+    }
+}
