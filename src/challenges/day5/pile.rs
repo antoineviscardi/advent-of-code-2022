@@ -59,7 +59,7 @@ mod tests {
     use std::fs::read_to_string;
 
     fn get_input() -> String {
-        read_to_string("src/day_5/test-input.txt").unwrap()
+        read_to_string("src/challenges/day5/test-input.txt").unwrap()
     }
 
     #[test]

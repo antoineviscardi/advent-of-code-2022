@@ -1,7 +1,11 @@
 mod filesystem;
 
 pub fn solve_pt1(input: &str) -> String {
-    todo!()
+    for line in input.split('\n') {
+        println!("{line}");
+    }
+
+    String::from("")
 }
 
 pub fn solve_pt2(input: &str) -> String {
@@ -15,7 +19,7 @@ mod tests {
 
     #[test]
     fn test_solve_pt1() {
-        let input = read_to_string("src/day_7/test-input.txt").unwrap();
+        let input = read_to_string("src/challenges/day7/test-input.txt").unwrap();
         let result = solve_pt1(&input);
         assert_eq!(result, "95437");
     }
@@ -23,5 +27,3 @@ mod tests {
     #[test]
     fn test_solve_pt2() {}
 }
-
-// use filesystem::director::Directory;

@@ -25,12 +25,25 @@ fn parse_day_from_args() -> Day {
     let mut args = std::env::args();
 
     // Skiping 0 as the first arg is the executable name
-    let arg = args.nth(1).unwrap();
+    let arg = args
+        .nth(1)
+        .expect("should be called with an argument, none found");
+
+    let invalid_arg_msg =
+        "the argument should have the form `<#>day` where `<#>` is a number between 1 and 25";
 
     let len = arg.len();
-    assert!((len == 4) || (len == 5));
-    assert_eq!(&arg[..3], "day");
+    if !(len >= 4 && len <= 5) {
+        panic!("{invalid_arg_msg}")
+    };
 
-    let n: u8 = arg[3..len].parse().unwrap();
+    if &arg[..3] != "day" {
+        panic!("{invalid_arg_msg}")
+    };
+
+    let n = arg[3..len]
+        .parse()
+        .unwrap_or_else(|_| panic!("{invalid_arg_msg}"));
+
     return Day(n);
 }
